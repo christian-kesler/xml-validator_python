@@ -5,7 +5,7 @@ import xmlschema
 import time
 
 # loading the xsd schema
-xsd = xmlschema.XMLSchema('shiporder.xsd')
+xsd = xmlschema.XMLSchema('schema.xsd')
 
 index = 0
 # infinite loop
@@ -20,6 +20,7 @@ while True:
 		# parsing file
 		tree = ET.parse(file)
 
+		# xsd.validate(tree)
 		# validating file against schema
 		if xsd.is_valid(tree):
 
