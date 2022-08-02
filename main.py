@@ -1,8 +1,8 @@
 import xml.etree.ElementTree as ET
 import shutil
 import glob
-import lxml
-from lxml import etree
+# import lxml
+# from lxml import etree
 
 for file in glob.glob("*.xml"):
 
@@ -14,12 +14,13 @@ for file in glob.glob("*.xml"):
 	# We assume it is valid until we find an error
 	valid_xml = True
 
-	xml_file = lxml.etree.parse(file)
-	xml_validator = lxml.etree.XMLSchema(file="schema.xsd")
+	# This portion of code is meant to validate against a schema, but is still under development
+		# xml_file = lxml.etree.parse(file)
+		# xml_validator = lxml.etree.XMLSchema(file="schema.xsd")
 
-	is_valid = xml_validator.validate(xml_file)
+		# is_valid = xml_validator.validate(xml_file)
 
-	print(is_valid)
+		# print(is_valid)
 
 	for book in root.findall('entry'):
 		if( isinstance(book.find("sender").text, str) ):
@@ -30,8 +31,8 @@ for file in glob.glob("*.xml"):
 			if( len(book.find("recipient").text) > 50 or len(book.find("recipient").text) < 10 ):
 				valid_xml = False
 
-		if( isinstance(book.find("distance").text, str) ):
-			if( len(book.find("distance").text) > 8 or len(book.find("distance").text) < 3 ):
+		if( isinstance(book.find("message").text, str) ):
+			if( len(book.find("message").text) > 8 or len(book.find("message").text) < 3 ):
 				valid_xml = False
 
 		# print( book.find("time") )
@@ -39,10 +40,9 @@ for file in glob.glob("*.xml"):
 			if( len(book.find("time").text) != 4 ):
 				valid_xml = False
 
-	# if valid_xml == True:
-	# 	shutil.move( file, "passed/" + file )
-	# elif valid_xml == False:
-	# 	shutil.move( file, "failed/" + file )
-	# else:
-	# 	shutil.move( file, "error/" + file )
-
+	if valid_xml == True:
+		shutil.move( file, "passed/" + file )
+	elif valid_xml == False:
+		shutil.move( file, "failed/" + file )
+	else:
+		shutil.move( file, "error/" + file )
